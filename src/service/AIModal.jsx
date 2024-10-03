@@ -1,0 +1,43 @@
+// const {
+//   GoogleGenerativeAI,
+//   HarmCategory,
+//   HarmBlockThreshold,
+// } = require("@google/generative-ai");
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const apiKey = import.meta.env.VITE_GOOGLE_GEMINI_AI_API_KEY;
+const genAI = new GoogleGenerativeAI(apiKey);
+
+const model = genAI.getGenerativeModel({
+  model: "gemini-1.5-flash",
+});
+
+const generationConfig = {
+  temperature: 1,
+  topP: 0.95,
+  topK: 64,
+  maxOutputTokens: 8192,
+  responseMimeType: "application/json",
+};
+
+export const chatSession = model.startChat({
+  generationConfig,
+  history: [
+    {
+      role: "user",
+      parts: [
+        {
+          text: "Generate Travel Plan for Location : Las Vegas, for 3 Days for Couple with a Cheap budget, Give me a Hotels options list with Hotel Name, Hotel Address, Price, hotel image url, geocoordinates, rating, descriptions and suggest itinerary with placename, place details, place image url, geo coordinates, ticket pricing, time to travel each of the location for 3 days with each day plan with best time to visit in JSON format\n",
+        },
+      ],
+    },
+    {
+      role: "model",
+      parts: [
+        {
+          text: '```json\n{\n  "hotelOptions": [\n    {\n      "name": "The D Las Vegas",\n      "address": "301 Fremont Street, Las Vegas, NV 89101",\n      "price": "$50 - $100 per night",\n      "imageUrl": "https://www.theDlasvegas.com/media/wysiwyg/hero-images/the-d-las-vegas-exterior-hero-image.jpg",\n      "geocoordinates": "36.1697, -115.1427",\n      "rating": 4.0,\n      "description": "A budget-friendly casino hotel located in the heart of Fremont Street Experience, offering a lively atmosphere, a variety of dining options, and a rooftop pool."\n    },\n    {\n      "name": "Golden Nugget Las Vegas",\n      "address": "129 E Fremont Street, Las Vegas, NV 89101",\n      "price": "$60 - $150 per night",\n      "imageUrl": "https://www.goldennugget.com/las-vegas/media/images/hotel-exterior-day.jpg",\n      "geocoordinates": "36.1697, -115.1427",\n      "rating": 4.5,\n      "description": "A historic casino hotel known for its luxurious amenities, including the famous shark tank, multiple pools, and fine dining restaurants."\n    },\n    {\n      "name": "Circus Circus Hotel & Casino",\n      "address": "2880 Las Vegas Blvd S, Las Vegas, NV 89109",\n      "price": "$40 - $80 per night",\n      "imageUrl": "https://www.circuscircus.com/media/wysiwyg/hero-images/hero-image-exterior-day.jpg",\n      "geocoordinates": "36.1131, -115.1739",\n      "rating": 3.5,\n      "description": "A family-friendly hotel with a circus theme, offering affordable accommodations, a wide range of entertainment options, and a large indoor amusement park."\n    }\n  ],\n  "itinerary": [\n    {\n      "day": "Day 1",\n      "plan": [\n        {\n          "time": "10:00 AM",\n          "place": "Fremont Street Experience",\n          "details": "A pedestrian mall with a canopy of lights and free live entertainment, including street performers, musicians, and even a zip line.",\n          "imageUrl": "https://www.visitlasvegas.com/sites/default/files/styles/gallery_crop_2x/public/media/2022-05/Fremont%20Street%20Experience%20%2312.jpg?itok=27_1978F",\n          "geocoordinates": "36.1695, -115.1427",\n          "ticketPricing": "Free",\n          "timeToTravel": "2 hours"\n        },\n        {\n          "time": "12:00 PM",\n          "place": "Heart Attack Grill",\n          "details": "A themed restaurant known for its unhealthy but delicious burgers and the "Triple Bypass" burger challenge.",\n          "imageUrl": "https://www.heartattackgrill.com/images/uploads/image/large/Heart-Attack-Grill-Las-Vegas-Inside.jpg",\n          "geocoordinates": "36.1698, -115.1426",\n          "ticketPricing": "Affordable",\n          "timeToTravel": "1 hour"\n        },\n        {\n          "time": "2:00 PM",\n          "place": "Neon Museum",\n          "details": "A museum dedicated to preserving historic Las Vegas neon signs.",\n          "imageUrl": "https://www.neonmuseum.org/wp-content/uploads/2021/03/Neon-Museum-Hero.jpg",\n          "geocoordinates": "36.1692, -115.1384",\n          "ticketPricing": "$20",\n          "timeToTravel": "2 hours"\n        },\n        {\n          "time": "6:00 PM",\n          "place": "The Mob Museum",\n          "details": "A museum dedicated to the history of organized crime in Las Vegas and the United States.",\n          "imageUrl": "https://www.themobmuseum.org/sites/default/files/images/exterior_mob_museum_3.jpg",\n          "geocoordinates": "36.1676, -115.1409",\n          "ticketPricing": "$25",\n          "timeToTravel": "2 hours"\n        }\n      ]\n    },\n    {\n      "day": "Day 2",\n      "plan": [\n        {\n          "time": "10:00 AM",\n          "place": "Bellagio Conservatory & Botanical Garden",\n          "details": "A free attraction featuring stunning floral displays and themed exhibits.",\n          "imageUrl": "https://www.bellagio.com/content/dam/bellagio/images/bellagio-conservatory/Conservatory-Floral-Decorations.jpg",\n          "geocoordinates": "36.1104, -115.1714",\n          "ticketPricing": "Free",\n          "timeToTravel": "1 hour"\n        },\n        {\n          "time": "11:00 AM",\n          "place": "The Venetian and The Palazzo",\n          "details": "A luxury resort complex with a replica of Venice, Italy, featuring canals, gondolas, and upscale shops.",\n          "imageUrl": "https://www.venetian.com/content/dam/venetian/images/hero/hero-venetian-exterior.jpg",\n          "geocoordinates": "36.1000, -115.1707",\n          "ticketPricing": "Free",\n          "timeToTravel": "2 hours"\n        },\n        {\n          "time": "1:00 PM",\n          "place": "The LINQ Promenade",\n          "details": "An outdoor shopping, dining, and entertainment district with a High Roller observation wheel.",\n          "imageUrl": "https://www.caesars.com/content/dam/caesars/linq/linq-exterior.jpg",\n          "geocoordinates": "36.0989, -115.1708",\n          "ticketPricing": "High Roller tickets start at $25",\n          "timeToTravel": "2 hours"\n        },\n        {\n          "time": "5:00 PM",\n          "place": "Las Vegas Strip",\n          "details": "The famous boulevard lined with casinos, hotels, and entertainment venues.",\n          "imageUrl": "https://www.visitlasvegas.com/sites/default/files/styles/gallery_crop_2x/public/media/2019-09/las-vegas-strip-at-night-shutterstock_1499489074.jpg?itok=B2j3h651",\n          "geocoordinates": "36.1109, -115.1734",\n          "ticketPricing": "Free",\n          "timeToTravel": "3 hours"\n        }\n      ]\n    },\n    {\n      "day": "Day 3",\n      "plan": [\n        {\n          "time": "10:00 AM",\n          "place": "Red Rock Canyon National Conservation Area",\n          "details": "A scenic area with red rock formations, hiking trails, and stunning views.",\n          "imageUrl": "https://www.nps.gov/redr/learn/photosmultimedia/red-rock-canyon-hero.jpg",\n          "geocoordinates": "36.1862, -115.3842",\n          "ticketPricing": "Entrance fee $15 per vehicle",\n          "timeToTravel": "3 hours"\n        },\n        {\n          "time": "1:00 PM",\n          "place": "Springs Preserve",\n          "details": "An outdoor museum and botanical garden showcasing the history and sustainability of the desert environment.",\n          "imageUrl": "https://www.springspreserve.org/sites/default/files/styles/hero_image/public/2021-10/Springs_Preserve_Hero_Image_10-21.jpg?itok=9W59vK7O",\n          "geocoordinates": "36.1384, -115.1854",\n          "ticketPricing": "$15",\n          "timeToTravel": "2 hours"\n        },\n        {\n          "time": "4:00 PM",\n          "place": "Downtown Container Park",\n          "details": "A unique shopping and entertainment district made from shipping containers.",\n          "imageUrl": "https://www.downtowncontainerpark.com/wp-content/uploads/2016/08/Downtown-Container-Park-Las-Vegas-Night-Shot-1.jpg",\n          "geocoordinates": "36.1692, -115.1457",\n          "ticketPricing": "Free",\n          "timeToTravel": "1 hour"\n        }\n      ]\n    }\n  ]\n}\n```\n\n**Notes:**\n\n* This itinerary is just a suggestion and can be customized based on your interests and preferences.\n* Ticket prices may vary depending on the time of year and availability.\n* Be sure to check the opening hours and closures of attractions before your trip.\n* Las Vegas is a very walkable city, but you may want to consider using public transportation or taxis to get around.\n* Remember to stay hydrated and wear sunscreen, especially during the summer months.\n* Enjoy your trip!\n',
+        },
+      ],
+    },
+  ],
+});
